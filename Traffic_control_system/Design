@@ -1,0 +1,57 @@
+module traffic_cont(output reg[1:0] hway,cntrd, input wire clk,rst,car);
+  parameter s0=3'b000,s1=3'b001,s2=3'b010,s3=3'b011,s4=3'b100;
+  parameter red=2'b00, yellow=2'b01,green=11;
+  reg[2:0] state,nxtstate;
+  always@(posedge clk, negedge rst)
+    begin
+      if(rst)
+        state<=s0;
+      else
+        state<=nxtstate;
+    end
+  always@(state or car)
+    case(state)
+      s0:begin
+        if(car)
+        	nxtstate=s1;
+        else
+          nxtstate=s0;
+      end
+      s1:@(posedge clk)
+        #2 nxtstate=s2;
+      s2:@(posedge clk)
+        #1 nxtstate=s3;
+      s3:begin
+        if(car)
+        	nxtstate=s3;
+        else
+          nxtstate=s4;
+      end
+      s4:@(posedge clk)
+         nxtstate=s0;
+      default:nxtstate=s0;
+    endcase
+  always@(state,car)
+    case(state)
+      s0:begin
+        hway=green;
+        cntrd=red;
+      end
+      s1:begin
+        hway=yellow;
+        cntrd=red;
+      end
+      s2:begin
+        hway=red;
+        cntrd=red;
+      end
+      s3:begin
+        hway=red;
+        cntrd=green;
+      end
+      s4:begin
+        hway=red;
+        cntrd=yellow;
+      end
+    endcase
+endmodule
