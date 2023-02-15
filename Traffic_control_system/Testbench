@@ -1,0 +1,33 @@
+module traffic_cnt_tb();
+  reg clk,rst,car=0;
+  wire[1:0] hway,cntrd;
+  traffic_cont DUT(.*);
+  initial
+    begin
+      clk=0;
+      forever
+        #4clk=~clk;
+    end
+  initial
+    begin
+      rst=0;
+      forever
+        #85rst=~rst;
+    end
+  initial
+    begin
+      $monitor("car is %d,so highway=%b, and country road=%b",car,hway,cntrd,$time);
+      #5;car=1;
+      #50;car=0;
+    end
+  initial
+    begin
+      $dumpfile("dump.vcd");
+      $dumpvars();
+    end
+  initial
+    begin
+           #200
+      $finish;
+    end
+endmodule
