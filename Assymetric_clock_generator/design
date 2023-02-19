@@ -1,0 +1,21 @@
+module assymetric_clock;
+  reg clk;
+  task main();
+    #1clk=0;
+    #2clk=1;
+    #3clk=0;
+    #10clk=1;
+    #1clk=0;
+  endtask
+  initial
+    begin
+      forever
+      main();
+    end
+  initial
+    begin
+      $dumpfile("dump.vcd");
+      $dumpvars();
+      #200$finish;
+    end
+endmodule
