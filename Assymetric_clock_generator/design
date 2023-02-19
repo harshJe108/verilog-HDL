@@ -1,6 +1,6 @@
 module assymetric_clock;
   reg clk;
-  task main();
+  task main();           //This code shows how we can provide clock input to an DUT with asymmetric clock signals, signals can be adjusted using delays.
     #1clk=0;
     #2clk=1;
     #3clk=0;
